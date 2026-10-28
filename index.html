@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zapdude - all your WhatsApp accounts in one window</title>
+<meta name="description" content="Zapdude: cliente de escritorio multi-cuenta para WhatsApp Web. Windows y macOS. Código abierto, AGPL-3.0.">
+<link rel="icon" type="image/png" href="assets/icon-32.png">
+<style>
+  :root{
+    --bg-top:#0d1f19; --bg-bottom:#08130f; --text:#eef4f1; --muted:#7d948a;
+    --accent:#2ee06f; --ink:#06231a; --card:rgba(255,255,255,0.035);
+    --line:rgba(46,224,111,0.16); --danger:#e05252;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; font-family:system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:linear-gradient(180deg,var(--bg-top) 0%,var(--bg-bottom) 100%);
+    background-attachment:fixed; color:var(--text); min-height:100vh;
+  }
+  .wrap{max-width:1060px; margin:0 auto; padding:0 22px}
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  header{display:flex; align-items:center; gap:14px; padding:26px 0 6px}
+  header img{width:40px; height:40px; border-radius:11px}
+  .brand{font-weight:700; font-size:19px; letter-spacing:0.2px}
+  .brand small{display:block; font-weight:400; font-size:11px; color:var(--muted); letter-spacing:0.4px}
+  .spacer{flex:1}
+  .lang{display:flex; gap:4px; background:var(--card); border:1px solid var(--line); border-radius:18px; padding:3px}
+  .lang button{border:0; background:transparent; color:var(--muted); padding:4px 12px; border-radius:14px; cursor:pointer; font-size:12px; font-weight:600}
+  .lang button.on{background:var(--accent); color:var(--ink)}
+  .gh-link{color:var(--muted); font-size:13px; margin-left:10px}
+
+  main{padding:0 0 70px}
+  .hero{display:grid; grid-template-columns:1.05fr 0.95fr; gap:44px; align-items:center; padding:54px 0 30px}
+  .hero h1{font-size:40px; line-height:1.12; margin:0 0 16px; letter-spacing:-0.5px}
+  .hero p.sub{color:var(--muted); font-size:17px; line-height:1.6; margin:0 0 26px; max-width:520px}
+
+  .panel{background:var(--card); border:1px solid var(--line); border-radius:18px; padding:20px}
+  .panel h3{margin:0 0 4px; font-size:15.5px}
+  .panel .ver{color:var(--muted); font-size:12.5px; margin:0 0 14px}
+  .dl{display:flex; flex-direction:column; gap:10px}
+  .btn{
+    display:flex; align-items:center; gap:12px; padding:12px 16px; border-radius:14px;
+    background:var(--accent); color:var(--ink); font-weight:700; font-size:14.5px; border:0; cursor:pointer;
+    text-decoration:none; transition:filter .15s ease;
+  }
+  .btn:hover{filter:brightness(1.06); text-decoration:none}
+  .btn.ghost{background:transparent; color:var(--text); border:1px solid var(--line); font-weight:600}
+  .btn .ico{width:20px; height:20px; flex:none}
+  .btn small{margin-left:auto; font-weight:500; opacity:0.75; font-size:11.5px; text-align:right}
+  .rec{outline:2px solid rgba(46,224,111,0.45); outline-offset:2px}
+  .note{color:var(--muted); font-size:12.5px; line-height:1.5; margin:12px 0 0}
+
+  .mock{background:#0a1611; border:1px solid var(--line); border-radius:16px; overflow:hidden; box-shadow:0 30px 60px rgba(0,0,0,0.45)}
+  .mock .bar{display:flex; gap:6px; padding:10px 12px; background:#0c1a14; border-bottom:1px solid rgba(255,255,255,0.05)}
+  .mock .bar i{width:10px; height:10px; border-radius:50%; background:rgba(255,255,255,0.14); display:block}
+  .mock .win{display:flex; height:300px}
+  .mock .rail{width:56px; background:#081009; border-right:1px solid rgba(255,255,255,0.05); display:flex; flex-direction:column; align-items:center; gap:12px; padding-top:14px}
+  .mock .rail .logo{width:32px; height:32px; border-radius:10px; background:linear-gradient(140deg,#34e877 0%,#0f9e6c 100%); display:flex; align-items:center; justify-content:center}
+  .mock .rail .logo svg{width:16px; height:16px}
+  .mock .av{width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:#fff}
+  .mock .list{width:210px; border-right:1px solid rgba(255,255,255,0.05); padding:10px; display:flex; flex-direction:column; gap:8px}
+  .mock .row{display:flex; gap:9px; align-items:center; padding:8px; border-radius:10px}
+  .mock .row.sel{background:rgba(46,224,111,0.10)}
+  .mock .row .who{min-width:0}
+  .mock .row .who b{display:block; font-size:11.5px; font-weight:600}
+  .mock .row .who span{display:block; font-size:10px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .mock .time{margin-left:auto; font-size:9.5px; color:var(--muted); flex:none}
+  .mock .badge{background:var(--accent); color:#06231a; border-radius:10px; font-size:9px; font-weight:800; padding:1px 6px; flex:none}
+  .mock .chat{flex:1; padding:16px; display:flex; flex-direction:column; gap:10px; justify-content:flex-end}
+  .bub{max-width:70%; padding:8px 11px; border-radius:12px; font-size:11px; line-height:1.4}
+  .bub.in{background:rgba(255,255,255,0.06); align-self:flex-start}
+  .bub.out{background:rgba(46,224,111,0.16); align-self:flex-end}
+  .mock .field{margin-top:6px; border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:7px 10px; font-size:10.5px; color:var(--muted)}
+
+  .grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; padding:34px 0}
+  .feat{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px}
+  .feat svg{width:26px; height:26px; stroke:var(--accent); fill:none; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round}
+  .feat h4{margin:12px 0 6px; font-size:14.5px}
+  .feat p{margin:0; color:var(--muted); font-size:13px; line-height:1.55}
+
+  h2.sec{font-size:26px; letter-spacing:-0.3px; margin:44px 0 6px}
+  p.sec-sub{color:var(--muted); margin:0 0 10px; font-size:14.5px}
+  .oset{display:grid; grid-template-columns:1fr; gap:14px}
+  .os{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px; display:flex; gap:16px; align-items:flex-start}
+  .os svg{width:30px; height:30px; stroke:var(--accent); fill:none; stroke-width:1.6; flex:none; margin-top:2px}
+  .os .txt{flex:1}
+  .os h4{margin:0 0 6px; font-size:15px}
+  .os p{margin:0 0 10px; color:var(--muted); font-size:13px; line-height:1.55}
+  .os .btn{display:inline-flex; padding:9px 16px; font-size:13.5px}
+  code{background:rgba(0,0,0,0.35); border:1px solid rgba(255,255,255,0.07); padding:2px 7px; border-radius:7px; font-size:12.5px}
+
+  section.privacy{background:var(--card); border:1px solid var(--line); border-radius:18px; padding:26px; margin-top:44px}
+  section.privacy p{color:var(--muted); font-size:13.5px; line-height:1.65; margin:0}
+  section.privacy p + p{margin-top:10px}
+
+  footer{border-top:1px solid rgba(255,255,255,0.07); padding:26px 0 44px; color:var(--muted); font-size:13px}
+  footer a{margin-right:18px}
+
+  @media (max-width:860px){
+    .hero{grid-template-columns:1fr; padding-top:30px}
+    .mock{order:-1}
+    .grid{grid-template-columns:1fr 1fr}
+  }
+  @media (max-width:560px){
+    .hero h1{font-size:30px}
+    .grid{grid-template-columns:1fr}
+    .mock .list{display:none}
+    header{flex-wrap:wrap}
+  }
+</style>
+</head>
+<body>
+<header class="wrap">
+  <img src="assets/icon-256.png" alt="Zapdude">
+  <div class="brand">Zapdude<small data-i18n="tag_small">WhatsApp multi-account desktop client</small></div>
+  <div class="spacer"></div>
+  <div class="lang">
+    <button id="lang-es" class="on">ES</button>
+    <button id="lang-en">EN</button>
+  </div>
+  <a class="gh-link" href="https://github.com/ldpf96/zapdude" data-i18n="gh_link">GitHub</a>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div>
+      <h1 data-i18n="h1">Todas tus cuentas de WhatsApp<br>en una sola ventana.</h1>
+      <p class="sub" data-i18n="sub">Cambia de cuenta en un clic, con la sesión intacta de cada una. Tema claro y oscuro en toda la ventana, bandeja del sistema, arranque automático y una API local para automatizar conversaciones. Libre y de código abierto.</p>
+      <div class="panel" style="max-width:480px">
+        <h3 data-i18n="dl_title">Descargar Zapdude</h3>
+        <p class="ver" id="ver">...</p>
+        <div class="dl">
+          <a class="btn" id="dl-win" data-os="win">
+            <svg class="ico" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.5 10.5 4.4v7.1H3V5.5zm0 13 7.5 1.1v-7H3v5.9zM11.5 4.2 21 3v8.5h-9.5V4.2zm0 6.3H21V19l-9.5-1.3v-7.2z"/></svg>
+            <span data-i18n="dl_win">Windows</span><small>Windows 10 / 11</small>
+          </a>
+          <a class="btn ghost" id="dl-mac-arm" data-os="mac">
+            <svg class="ico" viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 12.1c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.2-2.8.9-3.5.9-.7 0-1.8-.9-3-.8-1.5 0-2.9.9-3.7 2.3-1.6 2.7-.4 6.8 1.1 9 .7 1.1 1.6 2.3 2.8 2.2 1.1 0 1.5-.7 2.9-.7s1.7.7 2.9.7c1.2 0 2-1.1 2.7-2.2.9-1.2 1.2-2.4 1.3-2.5-.1 0-2.2-.8-2.1-3.6zM14.4 5.2c.6-.8 1.1-1.9 1-3-1 0-2.1.6-2.8 1.5-.6.7-1.2 1.8-1 2.9 1.1.1 2.2-.6 2.8-1.4z"/></svg>
+            <span data-i18n="dl_mac_arm">macOS (Apple Silicon)</span><small>M1 / M2 / M3 / M4</small>
+          </a>
+          <a class="btn ghost" id="dl-mac-intel" data-os="mac">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M2 10v4M22 10v4M10 2h4M10 22h4"/></svg>
+            <span data-i18n="dl_mac_intel">macOS (Intel)</span><small data-i18n="mac_min">macOS 14 o superior</small>
+          </a>
+        </div>
+        <p class="note" id="mac-note" data-i18n="mac_note">La app de macOS se distribuye directa (no App Store), así que macOS confirma la apertura la primera vez: abre la Terminal y corre <code>xattr -dr com.apple.quarantine /Applications/Zapdude.app</code> o usa Sistema, Privacidad y seguridad, Abrir de todos modos. Es un paso único.</p>
+        <p class="note" id="rel-fallback" hidden data-i18n="dl_fallback">Si los botones no cargan, ve directo a <a href="https://github.com/ldpf96/zapdude/releases">Releases</a>.</p>
+      </div>
+    </div>
+
+    <div class="mock" aria-hidden="true">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="win">
+        <div class="rail">
+          <div class="logo">
+            <svg viewBox="0 0 24 24"><path fill="#06231a" d="M13 2 4.5 13.5H10L9 22l8.5-11.5H12L13 2z"/></svg>
+          </div>
+          <div class="av" style="background:#0f9e6c">T</div>
+          <div class="av" style="background:#7c5cff">V</div>
+          <div class="av" style="background:#e0895c">S</div>
+          <div class="av" style="background:rgba(255,255,255,0.08); color:var(--muted); border:1px dashed rgba(255,255,255,0.2)">+</div>
+        </div>
+        <div class="list">
+          <div class="row sel">
+            <div class="av" style="background:#2ea043">E</div>
+            <div class="who"><b>Entregas Lima</b><span>Sa: El pedido sale mañana temprano</span></div>
+            <div class="time">4:12 p. m.</div>
+          </div>
+          <div class="row">
+            <div class="av" style="background:#7c5cff">V</div>
+            <div class="who"><b>Equipo Ventas</b><span>Dz: Listo, lo confirmo hoy</span></div>
+            <div class="time">3:13 p. m.</div>
+            <div class="badge">5</div>
+          </div>
+          <div class="row">
+            <div class="av" style="background:#e05252">C</div>
+            <div class="who"><b>Clientes VIP</b><span>Cl: Listo, coordinamos para mañana</span></div>
+            <div class="time">12:46 p. m.</div>
+          </div>
+          <div class="row">
+            <div class="av" style="background:#b0885c">S</div>
+            <div class="who"><b>Soporte 1</b><span>Sz: Ya salgo, voy hacia ahí</span></div>
+            <div class="time">12:01 p. m.</div>
+          </div>
+        </div>
+        <div class="chat">
+          <div class="bub in">Hola, ¿el envío de mañana sale a las 8?</div>
+          <div class="bub out">Sí, sale a las 8 y llega antes de las 10 👌</div>
+          <div class="bub in">Perfecto, gracias</div>
+          <div class="field" data-i18n="mock_field">Escribe un mensaje</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <h2 class="sec" data-i18n="feat_title">Hecho para trabajar con WhatsApp de verdad</h2>
+  <p class="sec-sub" data-i18n="feat_sub">Lo básico primero: que todas tus cuentas queden al alcance de un clic y nada se rompa.</p>
+  <div class="grid">
+    <div class="feat">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="4" height="16" rx="2"/><rect x="10" y="4" width="11" height="16" rx="2"/></svg>
+      <h4 data-i18n="f1t">Multi-cuenta real</h4>
+      <p data-i18n="f1d">Un webview por cuenta con perfil aislado: cada sesión vive sola. Cambiar es instantáneo, sin recargar.</p>
+    </div>
+    <div class="feat">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1"/></svg>
+      <h4 data-i18n="f2t">Tema claro y oscuro completo</h4>
+      <p data-i18n="f2d">El interruptor del drawer repinta toda la ventana al instante: rail, título del sistema y los chats, sin recargar ni perder sesión.</p>
+    </div>
+    <div class="feat">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 3v18M3 8h18"/></svg>
+      <h4 data-i18n="f3t">API local de automatización</h4>
+      <p data-i18n="f3d">REST + SSE + webhooks firmados en loopback: ábrela a tus agentes de IA o a tus scripts. Con API key y límite de rango.</p>
+    </div>
+    <div class="feat">
+      <svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4V5z"/></svg>
+      <h4 data-i18n="f4t">Bandeja y minimizado</h4>
+      <p data-i18n="f4d">Cierra la ventana y sigue viva en la bandeja. Arranque con Windows y arranque minimizado, ambos incluidos.</p>
+    </div>
+    <div class="feat">
+      <svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19 12a7 7 0 0 0-.1-1.2l2-1.6-2-3.4-2.4 1a7 7 0 0 0-2-1.2L14 3h-4l-.5 2.6a7 7 0 0 0-2 1.2l-2.4-1-2 3.4 2 1.6A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.6 2 3.4 2.4-1c.6.5 1.3.9 2 1.2L10 21h4l.5-2.6c.7-.3 1.4-.7 2-1.2l2.4 1 2-3.4-2-1.6c.1-.4.1-.8.1-1.2z"/></svg>
+      <h4 data-i18n="f5t">Interfaz de producto</h4>
+      <p data-i18n="f5d">Instalador NSIS sin admin, desinstalación limpia, icono de marca en barra y bandeja, contexto de browser desactivado.</p>
+    </div>
+    <div class="feat">
+      <svg viewBox="0 0 24 24"><path d="M4 12h16M4 12l6-6M4 12l6 6M20 6v12"/></svg>
+      <h4 data-i18n="f6t">Libre, siempre</h4>
+      <p data-i18n="f6d">AGPL-3.0: código en GitHub, sin suscripciones ni telemetría. Lo que ocurre en tus chats queda en tu computadora.</p>
+    </div>
+  </div>
+
+  <h2 class="sec" data-i18n="install_title">Instalación</h2>
+  <p class="sec-sub" data-i18n="install_sub">Descarga el build para tu sistema y listo. Sin cuentas nuevas, sin dinero.</p>
+  <div class="oset">
+    <div class="os">
+      <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M3 5.5 10.5 4.4v7.1H3V5.5zm0 13 7.5 1.1v-7H3v5.9zM11.5 4.2 21 3v8.5h-9.5V4.2zm0 6.3H21V19l-9.5-1.3v-7.2z"/></svg>
+      <div class="txt">
+        <h4>Windows</h4>
+        <p data-i18n="win_p">Instalador NSIS por usuario: no pide permisos de administrador, y desinstalar deja limpia la carpeta de datos. Windows 10 u 11.</p>
+        <a class="btn" id="dl-win-2" data-i18n="dl_win2">Descargar para Windows</a>
+      </div>
+    </div>
+    <div class="os">
+      <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M17.05 12.54c0-2.27 1.85-3.36 1.93-3.41-1.05-1.54-2.69-1.75-3.27-1.77-1.39-.14-2.72.82-3.43.82-.71 0-1.8-.8-2.96-.78-1.52.02-2.92.88-3.7 2.24-1.58 2.74-.4 6.79 1.14 9.01.75 1.08 1.65 2.29 2.83 2.25 1.13-.05 1.56-.73 2.93-.73 1.36 0 1.74.73 2.93.71 1.21-.02 1.98-1.1 2.72-2.18.86-1.26 1.22-2.48 1.24-2.54-.03-.02-2.39-.92-2.39-3.62zM14.87 4.38c.63-.76 1.05-1.82.94-2.88-.9.04-2 .6-2.65 1.36-.58.67-1.09 1.75-.95 2.78 1 .08 2.03-.51 2.66-1.26z"/></svg>
+      <div class="txt">
+        <h4 data-i18n="mac_h">macOS</h4>
+        <p data-i18n="mac_p">Arrastra el .dmg a Aplicaciones y abre. Apple Silicon usa el build aarch64 (M1, M2, M3, M4); las Mac Intel usan x64. Se requiere macOS 14 (Sonoma) o superior.</p>
+        <p data-i18n="mac_n2">Como no pasa por la App Store, la primera apertura pide una confirmación: xattr en Terminal o el botón "Abrir de todos modos" en Privacidad y seguridad.</p>
+        <div style="display:flex; gap:10px; flex-wrap:wrap">
+          <a class="btn" id="dl-mac-arm-2" data-i18n="dl_mac_arm">Descargar Apple Silicon</a>
+          <a class="btn ghost" id="dl-mac-intel-2" data-i18n="dl_mac_intel">Descargar Intel</a>
+        </div>
+      </div>
+    </div>
+    <div class="os">
+      <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2 3 7v10l9 5 9-5V7l-9-5zm7 13.5-7 3.9-7-3.9V8.5l7-3.9 7 3.9v7zM8 10a4 4 0 1 1 8 0 4 4 0 0 1-8 0z"/></svg>
+      <div class="txt">
+        <h4>Linux</h4>
+        <p data-i18n="lnx_p">Planificado: empaquetado deb y AppImage por CI. Mientras tanto, puedes compilar el código fuente con cargo y tauri.</p>
+        <a class="btn ghost" href="https://github.com/ldpf96/zapdude" data-i18n="lnx_gh">Ver en GitHub</a>
+      </div>
+    </div>
+  </div>
+
+  <section class="privacy">
+    <h2 class="sec" style="margin-top:0" data-i18n="priv_title">Privacidad y créditos</h2>
+    <p data-i18n="priv_1">Zapdude muestra tu propio WhatsApp Web dentro de una ventana de escritorio: todo lo que se ve y se envía fluye entre tu computadora y WhatsApp, igual que en el navegador. Tu configuración y las sesiones de cada cuenta viven en tu disco, en tu carpeta de datos del usuario.</p>
+    <p data-i18n="priv_2">Proyecto independiente de ldpf96, licencia GNU AGPL 3.0, con el diseño inspirado en ZapZap (de Rafael Tosta) e implementado en Rust. Desarrollado con asistencia de IA (OpenCode, modelo GLM-5.3), con cada cambio verificado en hardware real por el autor.</p>
+    <p data-i18n="priv_3">Zapdude no tiene afiliación, relación ni respaldo de WhatsApp ni de Meta Platforms. WhatsApp es marca de Meta Platforms, Inc.</p>
+  </section>
+</main>
+
+<footer class="wrap">
+  <a href="https://github.com/ldpf96/zapdude">GitHub</a>
+  <a href="https://github.com/ldpf96/zapdude/releases" data-i18n="f_releases">Releases</a>
+  <a href="https://github.com/ldpf96/zapdude/blob/main/NOTICE.md">AGPL-3.0</a>
+  <span data-i18n="f_copy">Zapdude no está afiliado a WhatsApp ni a Meta.</span>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var strings = {
+    es: {
+      tag_small: "Cliente de escritorio WhatsApp multi-cuenta",
+      gh_link: "GitHub",
+      h1: "Todas tus cuentas de WhatsApp<br>en una sola ventana.",
+      sub: "Cambia de cuenta en un clic, con la sesión intacta de cada una. Tema claro y oscuro en toda la ventana, bandeja del sistema, arranque automático y una API local para automatizar conversaciones. Libre y de código abierto.",
+      dl_title: "Descargar Zapdude",
+      dl_win: "Windows",
+      dl_mac_arm: "macOS (Apple Silicon)",
+      dl_mac_intel: "macOS (Intel)",
+      mac_min: "macOS 14 o superior",
+      mac_note: "La app de macOS se distribuye directa (no App Store), así que macOS confirma la apertura la primera vez: abre la Terminal y corre <code>xattr -dr com.apple.quarantine /Applications/Zapdude.app</code> o usa Sistema, Privacidad y seguridad, Abrir de todos modos. Es un paso único.",
+      dl_fallback: "Si los botones no cargan, ve directo a <a href=\"https://github.com/ldpf96/zapdude/releases\">Releases</a>.",
+      mock_field: "Escribe un mensaje",
+      feat_title: "Hecho para trabajar con WhatsApp de verdad",
+      feat_sub: "Lo básico primero: que todas tus cuentas queden al alcance de un clic y nada se rompa.",
+      f1t: "Multi-cuenta real", f1d: "Un webview por cuenta con perfil aislado: cada sesión vive sola. Cambiar es instantáneo, sin recargar.",
+      f2t: "Tema claro y oscuro completo", f2d: "El interruptor del drawer repinta toda la ventana al instante: rail, título del sistema y los chats, sin recargar ni perder sesión.",
+      f3t: "API local de automatización", f3d: "REST + SSE + webhooks firmados en loopback: ábrela a tus agentes de IA o a tus scripts. Con API key y límite de rango.",
+      f4t: "Bandeja y minimizado", f4d: "Cierra la ventana y sigue viva en la bandeja. Arranque con Windows y arranque minimizado, ambos incluidos.",
+      f5t: "Interfaz de producto", f5d: "Instalador NSIS sin admin, desinstalación limpia, icono de marca en barra y bandeja, contexto de browser desactivado.",
+      f6t: "Libre, siempre", f6d: "AGPL-3.0: código en GitHub, sin suscripciones ni telemetría. Lo que ocurre en tus chats queda en tu computadora.",
+      install_title: "Instalación", install_sub: "Descarga el build para tu sistema y listo. Sin cuentas nuevas, sin dinero.",
+      win_p: "Instalador NSIS por usuario: no pide permisos de administrador, y desinstalar deja limpia la carpeta de datos. Windows 10 u 11.",
+      dl_win2: "Descargar para Windows",
+      mac_h: "macOS",
+      mac_p: "Arrastra el .dmg a Aplicaciones y abre. Apple Silicon usa el build aarch64 (M1, M2, M3, M4); las Mac Intel usan x64. Se requiere macOS 14 (Sonoma) o superior.",
+      mac_n2: "Como no pasa por la App Store, la primera apertura pide una confirmación: xattr en Terminal o el botón \"Abrir de todos modos\" en Privacidad y seguridad.",
+      lnx_p: "Planificado: empaquetado deb y AppImage por CI. Mientras tanto, puedes compilar el código fuente con cargo y tauri.",
+      lnx_gh: "Ver en GitHub",
+      priv_title: "Privacidad y créditos",
+      priv_1: "Zapdude muestra tu propio WhatsApp Web dentro de una ventana de escritorio: todo lo que se ve y se envía fluye entre tu computadora y WhatsApp, igual que en el navegador. Tu configuración y las sesiones de cada cuenta viven en tu disco, en tu carpeta de datos del usuario.",
+      priv_2: "Proyecto independiente de ldpf96, licencia GNU AGPL 3.0, con el diseño inspirado en ZapZap (de Rafael Tosta) e implementado en Rust. Desarrollado con asistencia de IA (OpenCode, modelo GLM-5.3), con cada cambio verificado en hardware real por el autor.",
+      priv_3: "Zapdude no tiene afiliación, relación ni respaldo de WhatsApp ni de Meta Platforms. WhatsApp es marca de Meta Platforms, Inc.",
+      f_releases: "Releases",
+      f_copy: "Zapdude no está afiliado a WhatsApp ni a Meta.",
+      rec: "recomendado",
+      loading: "Consultando la última versión en GitHub..."
+    },
+    en: {
+      tag_small: "Multi-account WhatsApp desktop client",
+      gh_link: "GitHub",
+      h1: "All your WhatsApp accounts<br>in a single window.",
+      sub: "Switch accounts with one click and keep every session intact. Light and dark themes across the whole window, system tray, auto start, and a local API to automate conversations. Free and open source.",
+      dl_title: "Download Zapdude",
+      dl_win: "Windows",
+      dl_mac_arm: "macOS (Apple Silicon)",
+      dl_mac_intel: "macOS (Intel)",
+      mac_min: "macOS 14 or newer",
+      mac_note: "The macOS build ships directly (no App Store), so macOS asks for confirmation the first time it opens: in Terminal run <code>xattr -dr com.apple.quarantine /Applications/Zapdude.app</code>, or use System Settings, Privacy & Security, Open Anyway. One time only.",
+      dl_fallback: "If the buttons do not load, go straight to <a href=\"https://github.com/ldpf96/zapdude/releases\">Releases</a>.",
+      mock_field: "Type a message",
+      feat_title: "Built to work with WhatsApp for real",
+      feat_sub: "Basics first: every account one click away and nothing breaking.",
+      f1t: "Real multi-account", f1d: "One webview per account with an isolated profile: each session lives on its own. Switching is instant, no reload.",
+      f2t: "Full light / dark theme", f2d: "The drawer switch repaints the whole window instantly: rail, system title bar and the chats, without reloading or losing the session.",
+      f3t: "Local automation API", f3d: "REST + SSE + signed webhooks on loopback: hand it to your AI agents or scripts. API key and rate limit included.",
+      f4t: "Tray and minimized start", f4d: "Close the window and it keeps living in the tray. Start with Windows and start minimized, both included.",
+      f5t: "Product-grade interface", f5d: "Per-user NSIS installer with no admin prompt, clean uninstall, branded icon on taskbar and tray, browser context menu disabled.",
+      f6t: "Free, always", f6d: "AGPL-3.0: source on GitHub, no subscriptions, no telemetry. What happens in your chats stays on your computer.",
+      install_title: "Installation", install_sub: "Download the build for your system and you are done. No new accounts, no money.",
+      win_p: "Per-user NSIS installer: no admin rights needed, and uninstall leaves the data folder clean. Windows 10 or 11.",
+      dl_win2: "Download for Windows",
+      mac_h: "macOS",
+      mac_p: "Drag the .dmg to Applications and open it. Apple Silicon Macs use the aarch64 build (M1, M2, M3, M4); Intel Macs use x64. macOS 14 (Sonoma) or newer is required.",
+      mac_n2: "Since it does not go through the App Store, the first open asks for one confirmation: xattr in Terminal or the \"Open Anyway\" button in Privacy & Security.",
+      lnx_p: "Planned: deb and AppImage packages built by CI. Meanwhile you can compile the source with cargo and tauri.",
+      lnx_gh: "View on GitHub",
+      priv_title: "Privacy and credits",
+      priv_1: "Zapdude displays your own WhatsApp Web inside a desktop window: everything you see and send flows between your computer and WhatsApp, exactly like in the browser. Your settings and each account session live on your disk, in your user data folder.",
+      priv_2: "Independent project by ldpf96, GNU AGPL 3.0 license, design inspired by ZapZap (by Rafael Tosta) and implemented in Rust. Developed with AI assistance (OpenCode, GLM-5.3 model), with every change verified on real hardware by the author.",
+      priv_3: "Zapdude is not affiliated with, related to, or endorsed by WhatsApp or Meta Platforms. WhatsApp is a trademark of Meta Platforms, Inc.",
+      f_releases: "Releases",
+      f_copy: "Zapdude is not affiliated with WhatsApp or Meta.",
+      rec: "recommended",
+      loading: "Checking the latest version on GitHub..."
+    }
+  };
+
+  function setLang(lang){
+    var dict = strings[lang] || strings.es;
+    document.querySelectorAll("[data-i18n]").forEach(function(el){
+      var key = el.getAttribute("data-i18n");
+      if (key && dict[key] != null) el.innerHTML = dict[key];
+    });
+    document.documentElement.lang = lang === "en" ? "en" : "es";
+    document.getElementById("lang-es").className = lang === "es" ? "on" : "";
+    document.getElementById("lang-en").className = lang === "en" ? "on" : "";
+    try { localStorage.setItem("zapdude-lang", lang); } catch (_e) {}
+  }
+  document.getElementById("lang-es").onclick = function(){ setLang("es"); };
+  document.getElementById("lang-en").onclick = function(){ setLang("en"); };
+  var saved = null;
+  try { saved = localStorage.getItem("zapdude-lang"); } catch (_e2) {}
+  if (saved === "en" || ((saved == null) && (navigator.language || "").substring(0,2) === "en")) setLang("en");
+
+  function setBtn(id, asset, src, fallbackUrl){
+    var el = document.getElementById(id);
+    if (asset){ el.href = asset.browser_download_url; }
+    else { el.href = fallbackUrl; el.innerHTML += ""; }
+    el.setAttribute("aria-label", (asset ? asset.name : src.textContent) + " - GitHub Releases");
+  }
+
+  var RELEASES_URL = "https://github.com/ldpf96/zapdude/releases/latest";
+  var ids = [ ["dl-win","win"], ["dl-win-2","win"], ["dl-mac-arm","macarm"], ["dl-mac-arm-2","macarm"], ["dl-mac-intel","macintel"], ["dl-mac-intel-2","macintel"] ];
+  var byId = {};
+  ids.forEach(function(pair){ byId[pair[0]] = pair[1]; });
+
+  ids.forEach(function(pair){ document.getElementById(pair[0]).href = RELEASES_URL; });
+  var verEl = document.getElementById("ver");
+  var lang = (document.getElementById("lang-en").className === "on") ? "en" : "es";
+  verEl.textContent = strings[lang].loading;
+
+  fetch("https://api.github.com/repos/ldpf96/zapdude/releases/latest", { headers: { "Accept": "application/vnd.github+json" } })
+    .then(function(res){ if (!res.ok) throw new Error("http " + res.status); return res.json(); })
+    .then(function(rel){
+      var assets = rel.assets || [];
+      var pick = function(pattern){
+        for (var i = 0; i < assets.length; i++){
+          if (pattern.test(assets[i].name)) return assets[i];
+        }
+        return null;
+      };
+      var win = pick(/x64-setup\.exe$/i);
+      var arm = pick(/aarch64\.dmg$/i);
+      var intel = pick(/_x64\.dmg$/i);
+      setBtn("dl-win", win, document.getElementById("dl-win"), RELEASES_URL);
+      setBtn("dl-win-2", win, document.getElementById("dl-win-2"), RELEASES_URL);
+      setBtn("dl-mac-arm", arm, document.getElementById("dl-mac-arm"), RELEASES_URL);
+      setBtn("dl-mac-arm-2", arm, document.getElementById("dl-mac-arm-2"), RELEASES_URL);
+      setBtn("dl-mac-intel", intel, document.getElementById("dl-mac-intel"), RELEASES_URL);
+      setBtn("dl-mac-intel-2", intel, document.getElementById("dl-mac-intel-2"), RELEASES_URL);
+      if (rel.tag_name){
+        var label = rel.tag_name.replace(/^v/, "");
+        var date = "";
+        try { date = new Date(rel.published_at).toLocaleDateString(lang === "en" ? "en" : "es", { year: "numeric", month: "short", day: "numeric" }); } catch (_e3) {}
+        verEl.textContent = label + (date ? " - " + date : "");
+      }
+      if (win || arm || intel){
+        var osWin = (/windows/i).test(navigator.userAgent || "");
+        var osMac = (/mac/i).test(navigator.userAgent || "");
+        var preferred = osWin ? "win" : osMac ? "macarm" : "";
+        if (preferred){
+          ids.forEach(function(pair){
+            if (byId[pair[0]] === preferred) document.getElementById(pair[0]).classList.add("rec");
+          });
+        }
+      } else {
+        document.getElementById("rel-fallback").hidden = false;
+      }
+    })
+    .catch(function(){ verEl.textContent = ""; document.getElementById("rel-fallback").hidden = false; });
+})();
+</script>
+</body>
+</html>
