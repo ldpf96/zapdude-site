@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Zapdude - all your WhatsApp accounts in one window</title>
-<meta name="description" content="Zapdude: cliente de escritorio multi-cuenta para WhatsApp Web. Windows y macOS. Código abierto, AGPL-3.0.">
+<title>Zapdude - WhatsApp + Messenger, all your chats in one window</title>
+<meta name="description" content="Zapdude: hub de chats de escritorio para WhatsApp Web y Messenger. Multi-cuenta y multi-servicio. Windows y macOS. Código abierto, AGPL-3.0.">
 <meta name="theme-color" content="#08130f">
 <link rel="icon" type="image/png" href="assets/icon-32.png">
 <style>
@@ -219,8 +219,8 @@
 
 <main>
   <section class="hero wrap">
-    <div class="pill"><i class="dot"></i><span data-i18n="pill">Nuevo: tema claro y oscuro en toda la ventana, y las primeras versiones de macOS.</span></div>
-    <h1><span data-i18n="h1a">Todas tus cuentas de WhatsApp,</span><br><span class="grad" data-i18n="h1b">una sola ventana.</span></h1>
+    <div class="pill"><i class="dot"></i><span data-i18n="pill">Nuevo en 1.3.0: Messenger suma como servicio (fase de recepción) y notificaciones de marca con foto y nombre.</span></div>
+    <h1><span data-i18n="h1a">Tus chats de WhatsApp y Messenger,</span><br><span class="grad" data-i18n="h1b">una sola ventana.</span></h1>
     <p class="sub" data-i18n="sub">Cambiate de cuenta con un clic, con la sesión viva de cada una. Tema claro y oscuro completo, bandeja del sistema, arranque automático y una API local para que tus agentes trabajen por ti. Libre, de código abierto, sin suscripciones.</p>
     <div class="cta">
       <a class="btn" id="dl-win">
@@ -289,8 +289,8 @@
       <div class="card w4 reveal">
         <i class="glow"></i>
         <svg viewBox="0 0 24 24"><rect x="3" y="4" width="4" height="16" rx="2"/><rect x="10" y="4" width="11" height="16" rx="2"/></svg>
-        <h4 data-i18n="f1t">Multi-cuenta real</h4>
-        <p data-i18n="f1d">Un webview por cuenta con perfil aislado: cada sesión vive sola, con su propio espacio en disco. Cambiar de cuenta es un movimiento de posición, instantáneo, sin recargar ni parpadear ni volver a escanear un código QR.</p>
+        <h4 data-i18n="f1t">Multi-cuenta y multi-servicio</h4>
+        <p data-i18n="f1d">Un webview por cuenta con perfil aislado: cada sesión vive sola, con su propio espacio en disco. Cambiar de cuenta es un movimiento de posición, instantáneo, sin recargar ni parpadear. Y ahora cada cuenta elige SU servicio: WhatsApp Web o Messenger (fase de recepción; escribir, próximamente).</p>
       </div>
       <div class="card w2 reveal">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1"/></svg>
@@ -310,8 +310,8 @@
       </div>
       <div class="card w3 reveal">
         <svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4V5z"/></svg>
-        <h4 data-i18n="f5t">Llamadas con popouts</h4>
-        <p data-i18n="f5d">Voz, video y pantalla compartida funcionan: las ventanas de llamada salen falsas en ventanas reales, con permisos concedidos de una vez.</p>
+        <h4 data-i18n="f5t">Llamadas y notificaciones de marca</h4>
+        <p data-i18n="f5d">Voz, video y pantalla compartida funcionan; y las llamadas llegan como toasts de marca con foto redonda y nombre del llamador (incluida la perdida). Todas, del mismo tamaño, nacen uniformes.</p>
       </div>
       <div class="card w3 reveal">
         <svg viewBox="0 0 24 24"><path d="M4 12h16M4 12l6-6M4 12l6 6M20 6v12"/></svg>
@@ -323,7 +323,7 @@
 
   <section class="sec wrap" id="download">
     <h2 data-i18n="install_title">Instalación</h2>
-    <p class="lead" data-i18n="install_sub">Un download para tu sistema y listo. Sin cuentas nuevas y sin pagar nada.</p>
+    <p class="lead" data-i18n="install_sub">Bájalo de Releases (última: 1.3.0 multi-servicio), libérate y listo. Gratis para siempre bajo AGPL-3.0.</p>
     <div class="oset">
       <div class="os reveal">
         <svg class="filled" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M3 5.5 10.5 4.4v7.1H3V5.5zm0 13 7.5 1.1v-7H3v5.9zM11.5 4.2 21 3v8.5h-9.5V4.2zm0 6.3H21V19l-9.5-1.3v-7.2z"/></svg>
@@ -363,9 +363,9 @@
   <section class="sec wrap" id="about">
     <div class="plain reveal">
       <h2 data-i18n="priv_title">Privacidad y créditos</h2>
-      <p data-i18n="priv_1">Zapdude muestra tu propio WhatsApp Web dentro de una ventana de escritorio: todo lo que se ve y se envía fluye entre tu computadora y WhatsApp, igual que en el navegador. Tu configuración y las sesiones de cada cuenta viven en tu disco, en la carpeta de datos del usuario, y ni tu lista de chats ni tus archivos pasan por ningún servidor del proyecto.</p>
+      <p data-i18n="priv_1">Zapdude incrusta tus chats en una ventana de escritorio (WhatsApp Web y Messenger): todo lo que se ve y se envía fluye entre tu computadora y el servicio, igual que en el navegador. Tu configuración y las sesiones de cada cuenta viven en tu disco, en la carpeta de datos del usuario, y ni tu lista de chats ni tus archivos pasan por ningún servidor del proyecto.</p>
       <p data-i18n="priv_2">Proyecto independiente de ldpf96, licencia GNU AGPL 3.0. El diseño se hizo con ZapZap, de Rafael Tosta, como referencia, con implementación propia en Rust sobre Tauri. Desarrollado con asistencia de IA (OpenCode con el modelo GLM-5.3), con cada cambio probado en hardware real por el autor antes de subirlo.</p>
-      <p data-i18n="priv_3">Zapdude no tiene afiliación, relación ni respaldo de WhatsApp ni de Meta Platforms. WhatsApp es marca de Meta Platforms, Inc.</p>
+      <p data-i18n="priv_3">Zapdude no tiene afiliación, relación ni respaldo de WhatsApp, Messenger ni Meta Platforms. WhatsApp y Messenger son marcas de Meta Platforms, Inc.</p>
     </div>
 
     <div class="plain coffee reveal" id="coffee" hidden>
@@ -384,9 +384,10 @@
     <nav>
       <a href="https://github.com/ldpf96/zapdude" data-i18n="f_github">GitHub</a>
       <a href="https://github.com/ldpf96/zapdude/releases" data-i18n="f_releases">Releases</a>
-      <a href="https://github.com/ldpf96/zapdude/blob/main/NOTICE.md">AGPL-3.0</a>
+      <a href="https://github.com/ldpf96/zapdude/blob/main/LICENSE">Licencia AGPL-3.0</a>
+      <a href="https://github.com/ldpf96/zapdude/blob/main/NOTICE.md" data-i18n="f_notice">Atribuciones</a>
     </nav>
-    <span data-i18n="f_copy">Zapdude no está afiliado a WhatsApp ni a Meta. WhatsApp es marca de Meta Platforms, Inc.</span>
+    <span data-i18n="f_copy">Zapdude no está afiliado a WhatsApp ni a Meta. WhatsApp y Messenger son marcas de Meta Platforms, Inc.</span>
   </div>
 </footer>
 
@@ -403,8 +404,8 @@
       nav_features: "Funciones",
       nav_download: "Descargas",
       nav_github: "GitHub",
-      pill: "Nuevo: tema claro y oscuro en toda la ventana, y las primeras versiones de macOS.",
-      h1a: "Todas tus cuentas de WhatsApp,",
+      pill: "Nuevo en 1.3.0: Messenger suma como servicio (fase de recepción) y notificaciones de marca con foto y nombre.",
+      h1a: "Tus chats de WhatsApp y Messenger,",
       h1b: "una sola ventana.",
       sub: "Cambiate de cuenta con un clic, con la sesión viva de cada una. Tema claro y oscuro completo, bandeja del sistema, arranque automático y una API local para que tus agentes trabajen por ti. Libre, de código abierto, sin suscripciones.",
       cta_win: "Descargar para Windows",
@@ -414,20 +415,20 @@
       mock_field: "Escribe un mensaje",
       feat_title: "Hecho para trabajar de verdad",
       feat_sub: "Lo básico primero: tus cuentas a un clic y nada que se rompa. Lo demás, construido alrededor de eso.",
-      f1t: "Multi-cuenta real",
-      f1d: "Un webview por cuenta con perfil aislado: cada sesión vive sola, con su propio espacio en disco. Cambiar de cuenta es un movimiento de posición, instantáneo, sin recargar ni parpadear ni volver a escanear un código QR.",
+      f1t: "Multi-cuenta y multi-servicio",
+      f1d: "Un webview por cuenta con perfil aislado: cada sesión vive sola, con su propio espacio en disco. Cambiar de cuenta es un movimiento de posición, instantáneo, sin recargar ni parpadear. Y ahora cada cuenta elige SU servicio: WhatsApp Web o Messenger (fase de recepción; escribir, próximamente).",
       f2t: "Tema en toda la ventana",
       f2d: "El switch del drawer repinta todo al instante: rail, barra de título del sistema y los chats, sin recargar ni perder sesión.",
       f3t: "API local para agentes",
       f3d: "REST, SSE y webhooks firmados en loopback: conecta tus agentes de IA o tus scripts con API key y rate limit.",
       f4t: "Bandeja del sistema y comienzo silencioso",
       f4d: "Cierra la ventana y la app sigue viva en la barra, lista al clic. Arranque con Windows y arranque minimizado, ambos incluidos: la app abre donde la dejaste, con todas las sesiones tibias.",
-      f5t: "Llamadas con popouts",
-      f5d: "Voz, video y pantalla compartida funcionan: las ventanas de llamada salen falsas en ventanas reales, con permisos concedidos de una vez.",
+      f5t: "Llamadas y notificaciones de marca",
+      f5d: "Voz, video y pantalla compartida funcionan; y las llamadas llegan como toasts de marca con foto redonda y nombre del llamador (incluida la perdida). Todas, del mismo tamaño, nacen uniformes.",
       f6t: "Libre, siempre",
       f6d: "AGPL-3.0: el código completo en GitHub. Sin suscripciones, sin telemetría, sin anuncios. Lo que pasa en tus chats se queda en tu computadora.",
       install_title: "Instalación",
-      install_sub: "Un download para tu sistema y listo. Sin cuentas nuevas y sin pagar nada.",
+      install_sub: "Bájalo de Releases (última: 1.3.0 multi-servicio), libérate y listo. Gratis para siempre bajo AGPL-3.0.",
       win_h: "Windows",
       win_p: "Instalador NSIS por usuario: no pide permisos de administrador y la desinstalación deja la carpeta de datos limpia. Funciona en Windows 10 y 11. El icono verde con su relámpago queda en la barra de tareas y en la bandeja.",
       mac_h: "macOS",
@@ -438,15 +439,16 @@
       lnx_p: "Planificado: deb y AppImage construidos por CI. Mientras tanto, el código fuente se compila con cargo y tauri, tal como en el repo.",
       lnx_gh: "Ver el código",
       priv_title: "Privacidad y créditos",
-      priv_1: "Zapdude muestra tu propio WhatsApp Web dentro de una ventana de escritorio: todo lo que se ve y se envía fluye entre tu computadora y WhatsApp, igual que en el navegador. Tu configuración y las sesiones de cada cuenta viven en tu disco, en la carpeta de datos del usuario, y ni tu lista de chats ni tus archivos pasan por ningún servidor del proyecto.",
+      priv_1: "Zapdude incrusta tus chats en una ventana de escritorio (WhatsApp Web y Messenger): todo lo que se ve y se envía fluye entre tu computadora y el servicio, igual que en el navegador. Tu configuración y las sesiones de cada cuenta viven en tu disco, en la carpeta de datos del usuario, y ni tu lista de chats ni tus archivos pasan por ningún servidor del proyecto.",
       priv_2: "Proyecto independiente de ldpf96, licencia GNU AGPL 3.0. El diseño se hizo con ZapZap, de Rafael Tosta, como referencia, con implementación propia en Rust sobre Tauri. Desarrollado con asistencia de IA (OpenCode con el modelo GLM-5.3), con cada cambio probado en hardware real por el autor antes de subirlo.",
-      priv_3: "Zapdude no tiene afiliación, relación ni respaldo de WhatsApp ni de Meta Platforms. WhatsApp es marca de Meta Platforms, Inc.",
+      priv_3: "Zapdude no tiene afiliación, relación ni respaldo de WhatsApp, Messenger ni Meta Platforms. WhatsApp y Messenger son marcas de Meta Platforms, Inc.",
       coffee_t: "¿Te funciona bien? Invita un café",
       coffee_d: "Zapdude es libre y gratis para siempre. Si te está ahorrando tiempo todos los días, un café se metaboliza en más cosa buena: más plataformas, más detalles y más atención a los reportes.",
       coffee_btn: "Invitar un café",
       f_github: "GitHub",
       f_releases: "Releases",
-      f_copy: "Zapdude no está afiliado a WhatsApp ni a Meta. WhatsApp es marca de Meta Platforms, Inc.",
+      f_notice: "Atribuciones",
+      f_copy: "Zapdude no está afiliado a WhatsApp ni a Meta. WhatsApp y Messenger son marcas de Meta Platforms, Inc.",
       loading: "Consultando la última versión...",
       rel_fallback: "Los botones caen al Releases si la API no carga."
     },
@@ -454,8 +456,8 @@
       nav_features: "Features",
       nav_download: "Download",
       nav_github: "GitHub",
-      pill: "New: light and dark themes across the whole window, plus the first macOS builds.",
-      h1a: "All your WhatsApp accounts,",
+      pill: "New in 1.3.0: Messenger joins as a service (receive phase) and branded notifications with photo and name.",
+      h1a: "All your WhatsApp and Messenger chats,",
       h1b: "one window.",
       sub: "Switch accounts with one click and keep every session alive. Full light and dark theme, system tray, auto start, and a local API so your agents work for you. Free, open source, no subscriptions.",
       cta_win: "Download for Windows",
@@ -465,20 +467,20 @@
       mock_field: "Type a message",
       feat_title: "Built to work for real",
       feat_sub: "Basics first: your accounts one click away and nothing breaking. Everything else is built around that.",
-      f1t: "Real multi-account",
-      f1d: "One webview per account with an isolated profile: every session lives on its own disk space. Switching is a position move, instant, with no reload, no flicker and no QR rescans.",
+      f1t: "Multi-account and multi-service",
+      f1d: "One webview per account with an isolated profile: every session lives on its own disk space. Switching is a position move, instant, with no reload and no flicker. And now every account picks its OWN service: WhatsApp Web or Messenger (receive phase; sending comes next).",
       f2t: "Theme across the window",
       f2d: "The drawer switch repaints everything instantly: rail, system title bar and the chats, without reloading or losing the session.",
       f3t: "Local API for agents",
       f3d: "REST, SSE and signed webhooks on loopback: hand it to your AI agents or scripts with an API key and rate limiting.",
       f4t: "System tray and silent start",
       f4d: "Close the window and the app stays alive in the tray, ready at one click. Start with Windows and start minimized, both included: it opens where you left it, with every session warm.",
-      f5t: "Calls with popouts",
-      f5d: "Voice, video and screen sharing work: call windows arrive as real windows, with permissions granted in one step.",
+      f5t: "Calls and branded notifications",
+      f5d: "Voice, video and screen sharing work; calls surface as branded toasts with a round photo and the caller's name (missed calls included). Every one of them is the same size at birth.",
       f6t: "Free, always",
       f6d: "AGPL-3.0: the full source is on GitHub. No subscriptions, no telemetry, no ads. What happens in your chats stays on your computer.",
       install_title: "Installation",
-      install_sub: "One download for your system and you are done. No new accounts, no money.",
+      install_sub: "Grab it from Releases (latest: 1.3.0 multi-service), free forever under AGPL-3.0.",
       win_h: "Windows",
       win_p: "Per-user NSIS installer: no admin rights needed, and uninstall leaves the data folder clean. Works on Windows 10 and 11. The green bolt icon lands on the taskbar and the tray.",
       mac_h: "macOS",
@@ -489,15 +491,16 @@
       lnx_p: "Planned: deb and AppImage packages built by CI. Meanwhile the source compiles with cargo and tauri, exactly like in the repo.",
       lnx_gh: "See the source",
       priv_title: "Privacy and credits",
-      priv_1: "Zapdude displays your own WhatsApp Web inside a desktop window: everything you see and send flows between your computer and WhatsApp, exactly like in the browser. Your settings and the session of each account live on your disk, in the user data folder, and neither your chat list nor your files pass through any server of this project.",
+      priv_1: "Zapdude embeds your chats in a desktop window (WhatsApp Web and Messenger): everything you see and send flows between your computer and the service, exactly like in the browser. Your settings and every account's session live on your disk, in the user data folder, and neither your chat list nor your files pass through any server of this project.",
       priv_2: "Independent project by ldpf96, GNU AGPL 3.0 license. The design was made with ZapZap, by Rafael Tosta, as the reference, with an original implementation in Rust on Tauri. Developed with AI assistance (OpenCode with the GLM-5.3 model), with every change tested on real hardware by the author before shipping.",
-      priv_3: "Zapdude is not affiliated with, related to, or endorsed by WhatsApp or Meta Platforms. WhatsApp is a trademark of Meta Platforms, Inc.",
+      priv_3: "Zapdude is not affiliated with, related to, or endorsed by WhatsApp, Messenger, or Meta Platforms. WhatsApp and Messenger are trademarks of Meta Platforms, Inc.",
       coffee_t: "Working well? Buy me a coffee",
       coffee_d: "Zapdude is free and will stay free forever. If it saves you time every day, one coffee becomes more good stuff: more platforms, more details, more attention to your reports.",
       coffee_btn: "Buy me a coffee",
       f_github: "GitHub",
       f_releases: "Releases",
-      f_copy: "Zapdude is not affiliated with WhatsApp or Meta. WhatsApp is a trademark of Meta Platforms, Inc.",
+      f_notice: "Attributions",
+      f_copy: "Zapdude is not affiliated with WhatsApp or Meta. WhatsApp and Messenger are trademarks of Meta Platforms, Inc.",
       loading: "Checking the latest version...",
       rel_fallback: "Buttons fall back to Releases if the API does not load."
     }

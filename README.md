@@ -1,8 +1,11 @@
 # zapdude-site
 
 Download site for [Zapdude](https://github.com/ldpf96/zapdude), the
-multi-account WhatsApp Web desktop client. Static, dependency-free,
+desktop chat hub for WhatsApp and Messenger. Static, dependency-free,
 vanilla HTML/CSS/JS.
+
+License: **GNU AGPL-3.0** (see [LICENSE](./LICENSE) in this repository
+and the full text in the main repo).
 
 Live at: https://ldpf96.github.io/zapdude-site/
 
